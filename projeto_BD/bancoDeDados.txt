@@ -1,0 +1,155 @@
+/*CREATE TABLE pessoa(
+	pessoaId SERIAL PRIMARY KEY,
+	primeiroNome VARCHAR,
+	ultimoNome VARCHAR,
+	endereco VARCHAR,
+	cidade varchar,
+	estado VARCHAR,
+	cep VARCHAR,
+	data_nasc date,
+	cpf VARCHAR,
+	telefone VARCHAR
+);*/
+
+/*CREATE TABLE admin(
+	adminId SERIAL PRIMARY KEY,
+	usuario VARCHAR,
+	senha VARCHAR,
+	pessoaId INT REFERENCES pessoa(pessoaId) UNIQUE,
+	logado INT DEFAULT 0
+);*/
+
+/*CREATE TABLE funcionario(
+	funcId SERIAL PRIMARY KEY,
+	dataContratacao DATE,
+	anosDeExperiencia INT,
+	pessoaId INT REFERENCES pessoa(pessoaId) UNIQUE
+);*/
+
+/*CREATE TABLE medico(
+	medicoId SERIAL PRIMARY KEY,
+	descAbilidade VARCHAR,
+	usuario VARCHAR,
+	senha VARCHAR,
+	funcId INT REFERENCES funcionario(funcId) UNIQUE,
+	setorId INT REFERENCES setor(setorId),
+	departamentoId INT REFERENCES departamento(departamentoId),
+	logado INT DEFAULT 0
+);*/
+
+/*CREATE TABLE enfermeiro(
+	enfermeiroId SERIAL PRIMARY KEY,
+	descAbilidade VARCHAR,
+	usuario VARCHAR,
+	senha VARCHAR,
+	funcId INT REFERENCES funcionario(funcId) UNIQUE,
+	setorId INT REFERENCES setor(setorId),
+	departamentoId INT REFERENCES departamento(departamentoId),
+	logado INT DEFAULT 0
+);*/
+
+/*CREATE TABLE recepcionista(
+	recepcionistaId SERIAL PRIMARY KEY,
+	descAbilidade VARCHAR,
+	usuario VARCHAR,
+	senha VARCHAR,
+	funcId INT REFERENCES funcionario(funcId) UNIQUE,
+	logado INT DEFAULT 0
+);*/
+
+/*CREATE TABLE clinica(
+	clinicaId SERIAL PRIMARY KEY,
+	clinicaNome VARCHAR
+);*/
+
+/*CREATE TABLE departamento(
+	departamentoId SERIAL PRIMARY KEY,
+	departamentoNome VARCHAR,
+	clinicaId INT REFERENCES clinica(clinicaId)
+);*/
+
+--Dps verificar se nao precisa mais nada
+/*CREATE TABLE paciente(
+	pacienteId SERIAL PRIMARY KEY,
+	dataReg DATE,
+	pessoaId INT REFERENCES pessoa(pessoaId)
+);*/
+
+
+/*CREATE TABLE tratamento(
+	tratamentoId SERIAL PRIMARY KEY,
+	tratamentoDesc VARCHAR,
+	tratamentoData DATE,
+	tratamentoValor FLOAT CHECK(tratamentoValor >= 0),
+	pacienteId INT REFERENCES paciente(pacienteId),
+	medicoId INT REFERENCES medico(medicoId)
+);*/
+
+/*CREATE TABLE medicamento(
+	medicamentoId SERIAL PRIMARY KEY,
+	medicamentoNome VARCHAR,
+	medicamentoDesc VARCHAR,
+	quantidade INT CHECK(quantidade>=0),
+	preco FLOAT CHECK(preco >= 0)
+);*/
+
+/*CREATE TABLE prescricao(
+	prescricaoId SERIAL PRIMARY KEY,
+	prescricaoData DATE,
+	medicamentoId INT REFERENCES medicamento(medicamentoId),
+	tratamentoId INT REFERENCES tratamento(tratamentoId)
+);*/
+
+/*CREATE TABLE admissao(
+	admissaoId SERIAL PRIMARY KEY,
+	pacienteId INT REFERENCES paciente(pacienteId),
+	adm_data DATE,
+	disc_date VARCHAR
+);*/
+
+/*CREATE TABLE setor(
+	setorId SERIAL PRIMARY KEY,
+	clinicaId INT REFERENCES clinica(clinicaId),
+	setorNome VARCHAR
+);*/
+
+/*CREATE TABLE quarto(
+	quartoId SERIAL PRIMARY KEY,
+	quartoDesc VARCHAR,
+	capacidade INT,
+	quartoNum INT,
+	setorId INT REFERENCES setor(setorId),
+	disponivel INT DEFAULT 1
+);*/
+
+/*CREATE TABLE cama(
+	camaId SERIAL PRIMARY KEY,
+	quartoId INT REFERENCES quarto(quartoId),
+	pacienteId INT REFERENCES paciente(pacienteid),
+	camaNum INT
+);*/
+
+
+--INSERT INTO clinica(clinicaNome)VALUES('ViverCauan');
+--INSERT INTO departamento(departamentoNome,clinicaId)VALUES('CENTRO DE INCONTINÊNCIA E DOENÇAS DO ASSOALHO PÉLVICO',1);
+--INSERT INTO setor(clinicaId,setorNome)VALUES(1,'setor das dores');
+
+/*INSERT INTO pessoa(primeiroNome,ultimoNome,endereco,cidade,estado,cep,data_nasc,cpf,telefone) 
+VALUES ('Pedro','Alephu','rua: nao sei','Má Vista','Rorãima','69308031','1999-01-01','000.000.000-01','99153-1289');
+
+INSERT INTO pessoa(primeiroNome,ultimoNome,endereco,cidade,estado,cep,data_nasc,cpf,telefone) 
+VALUES ('Ibukun','Didier','rua: nao sei 69','Má Vista','Rorãima','69308031','1995-01-01','000.000.000-02','99153-1289');*/
+--SELECT * FROM pessoa;
+
+--INSERT INTO funcionario(dataContratacao,anosDeExperiencia,pessoaId)VALUES('2001-01-01','5','1');
+--SELECT * FROM funcionario;
+
+--INSERT INTO funcionario(dataContratacao,anosDeExperiencia,pessoaId)VALUES('2004-02-01','1','2');
+
+--INSERT INTO admin(usuario,senha,pessoaId)VALUES('adm','1234',1);	
+--INSERT INTO medico(descAbilidade,usuario,senha,funcId)VALUES('açougueiro','med','1234',2);
+/*INSERT INTO enfermeiro(descAbilidade,usuario,senha,funcId,setorId,departamentoId)VALUES('supositorio','enf','1234',
+																						2,1,1);*/
+--INSERT INTO recepcionista(descAbilidade,usuario,senha,funcId)VALUES('dormir','recp','1234',2);
+
+
