@@ -30,9 +30,9 @@ if($btn_cadastrar){
 		$disponivel = $linha[0]['disponivel'];
 		$quartoId = $linha[0]['quartoid'];
 		if($disponivel==1){
-			/*$con->query("INSERT INTO pessoa (primeiroNome,ultimoNome,endereco,cidade,estado,cep,
+			$con->query("INSERT INTO pessoa (primeiroNome,ultimoNome,endereco,cidade,estado,cep,
 			data_nasc,cpf,telefone) VALUES ($primeiroNome,$ultimoNome,$endereco,$cidade,$estado,
-			$cep,$data_nasc,$cpf,$telefone)");*/
+			$cep,$data_nasc,$cpf,$telefone)");
 			//echo $con->errorCode();
 			//echo '<br>';
 			//var_dump($con->errorInfo());
@@ -41,7 +41,7 @@ if($btn_cadastrar){
 			$stmt->execute();
 			$linha=$stmt->fetchAll(PDO::FETCH_ASSOC);
 			$pessoaId = $linha[0]['pessoaid'];			
-			//$con->query("INSERT INTO paciente (dataReg,pessoaId) VALUES ($data_reg,$pessoaId)");
+			$con->query("INSERT INTO paciente (dataReg,pessoaId) VALUES ($data_reg,$pessoaId)");
 			
 			$sql = "SELECT pacienteId FROM paciente ORDER BY pacienteId desc limit 1";
 			$stmt = $con->prepare($sql);
