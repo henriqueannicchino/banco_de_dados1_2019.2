@@ -14,7 +14,7 @@ if(!empty($_SESSION['id'])){
 <html lang="pt-br">
 <head>
 	<meta charset="utf-8"/>
-	<link rel="stylesheet" href="styleMedicoMain">
+	<link rel="stylesheet" href="styleMedicoMain.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="main.js"></script>
 </head>
@@ -26,38 +26,30 @@ if(!empty($_SESSION['id'])){
 			<li class="li-p"><a href="">HOME</a></li>
 			<li class="li-p">
 				<a href="javascript://" class="bt1">
-					NOTICIAS
+					Preescrição
 					<img src="../image/seta_branca.png" width="20">
 				</a>
 				<ul class="ul-noticias">
-					<li><a href="">link 1</a></li>
-					<li><a href="">link 2</a></li>
-					<li><a href="">link 3</a></li>
-					<li><a href="">link 4</a></li>
+					<li><a href="">Nova</a></li>
 				</ul>
 			</li>
 			<li class="li-p">
 				<a href="javascript://" class="bt2">
-					entretenimento
+					Pacientes
 					<img src="../image/seta_branca.png" width="20">
 				</a>
 				<ul class="ul-entret">
-					<li><a href="">link 1</a></li>
-					<li><a href="">link 2</a></li>
-					<li><a href="">link 3</a></li>
-					<li><a href="">link 4</a></li>
+					<li><a href="../pacientes/medico.php">Meus</a></li>
+					<li><a href="../pacientes/list.php">Todos</a></li>
 				</ul>
 			</li>
 			<li class="li-p">
 				<a href="javascript://" class="bt3">
-					fale conosco
+					Medicamentos
 					<img src="../image/seta_branca.png" width="20">
 				</a>
 				<ul class="ul-fale-c">
-					<li><a href="">link 1</a></li>
-					<li><a href="">link 2</a></li>
-					<li><a href="">link 3</a></li>
-					<li><a href="">link 4</a></li>
+					<li><a href="../medicamentos/list.php">Listar</a></li>
 				</ul>
 			</li>
 			<li class="li-p"><a href="../sair.php">SAIR</a></li>
