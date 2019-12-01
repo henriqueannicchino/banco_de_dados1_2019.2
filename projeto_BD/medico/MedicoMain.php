@@ -30,7 +30,7 @@ if(!empty($_SESSION['id'])){
 					<img src="../image/seta_branca.png" width="20">
 				</a>
 				<ul class="ul-noticias">
-					<li><a href="">Nova</a></li>
+					<li><a href="../prescricao/new.php">Nova</a></li>
 				</ul>
 			</li>
 			<li class="li-p">

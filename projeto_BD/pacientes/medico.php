@@ -1,5 +1,14 @@
 <?php
 session_start();
+if(!empty($_SESSION['id'])){
+	$temp=$_SESSION['id'];
+	//echo "Ciao ".$_SESSION['nome'].", benvenuto <br>";
+	//echo "<a href='sair.php'>Sair</a>";
+}else{
+	//3 - vai printar "É preciso está logado"
+	$_SESSION['msg'] = "É preciso está logado <br>";
+	header("Location: ../login.php");
+}
 include_once("../conection.php");
 ?>
 

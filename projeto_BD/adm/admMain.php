@@ -11,6 +11,26 @@ if($linha[0]['logado']==0){
 }
 
 ?>
+
+
+
+  <?php
+    $sql = "SELECT departamentoid,departamentonome FROM departamento";
+    $stmt = $con->prepare($sql);
+    $stmt->execute();
+    $departamentos=$stmt->fetchAll(PDO::FETCH_ASSOC);
+    $medicamentos = $linha;
+  ?>      
+
+  <?php
+    $sql = "SELECT setorid,setornome FROM setor";
+    $stmt = $con->prepare($sql);
+    $stmt->execute();
+    $linha=$stmt->fetchAll(PDO::FETCH_ASSOC);
+    $setors = $linha;
+  ?>      
+
+
 <html lang="pt-br">
 <head>
 	<meta charset="utf-8">
@@ -73,8 +93,28 @@ if($linha[0]['logado']==0){
 					<input id="descAb" type="text" name="descAbilidade" placeholder="descAbilidade" value="">
 					<input type="text" name="usuario" placeholder="usuario" value="">
 					<input type="password" name="senha" placeholder="senha" value="">
-					<input id="setor" type="text" name="setor" placeholder="setor" value="">
-					<input id="dept" type="text" name="departamento" placeholder="departamento" value="">
+					<select name="setor" id="setor">
+            <?php
+              foreach($setors as $setor)
+              {
+             ?>
+                <option value="<?php echo $setor['setornome'];?>"><?php echo $setor['setornome'];?></option>
+            <?php
+              }
+             ?>
+					</select>
+					<select name="departamento" id="dept">
+            <?php
+              foreach($departamentos as $departamento)
+              {
+             ?>
+                <option value="<?php echo $departamento['departamentonome'];?>"><?php echo $departamento['departamentonome'];?></option>
+            <?php
+              }
+             ?>
+					</select>
+					<!--<input id="setor" type="text" name="setor" placeholder="setor" value="">-->
+					<!--<input id="dept" type="text" name="departamento" placeholder="departamento" value="">-->
 				</div>
 				<input type="submit" class="btn_menu" name="btn_cadastrar" value="cadastrar">
 			</div>
