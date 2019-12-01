@@ -11,10 +11,10 @@ if($btnLogin){
 		//Gerar a senha criptografada
 		//echo password_hash($senha, PASSWORD_DEFAULT);
 		$sql = "SELECT * FROM arduino_data WHERE sended=0 ORDER BY id limit 40 ";
-$stmt = $con->prepare($sql);
-$stmt->execute();
-$linha=$stmt->fetchAll(PDO::FETCH_ASSOC);
-$row_count = $stmt->rowCount();
+		$stmt = $con->prepare($sql);
+		$stmt->execute();
+		$linha=$stmt->fetchAll(PDO::FETCH_ASSOC);
+		$row_count = $stmt->rowCount();
 		
 		if($tipo_acesso=="ADMIN"){
 			$sql = "SELECT * FROM admin WHERE usuario='$usuario' LIMIT 1";
@@ -35,7 +35,6 @@ $row_count = $stmt->rowCount();
 		}
 		
 		$linha=$stmt->fetchAll(PDO::FETCH_ASSOC);
-		var_dump($linha);
 		$row_count = $stmt->rowCount();
 		if($row_count>0){
 			if($senha==$linha[0]['senha']){
@@ -51,7 +50,7 @@ $row_count = $stmt->rowCount();
 				}else if($tipo_acesso=="ENFERMEIRO"){
 					$sql = "UPDATE enfermeiro SET logado = 1 WHERE enfermeiroid = :id";
 					$stmt = $con->prepare($sql);
-					$stmt->bindParam(':id', $linha[0]['adminid']);
+					$stmt->bindParam(':id', $linha[0]['enfermeiroid']);
 					$stmt->execute();
 					$_SESSION['id'] = $linha[0]['enfermeiroid'];
 					$_SESSION['tipo'] = "enfermeiro";
@@ -59,7 +58,7 @@ $row_count = $stmt->rowCount();
 				}else if($tipo_acesso=="MEDICO"){
 					$sql = "UPDATE medico SET logado = 1 WHERE medicoid = :id";
 					$stmt = $con->prepare($sql);
-					$stmt->bindParam(':id', $linha[0]['recepcionistaid']);
+					$stmt->bindParam(':id', $linha[0]['medicoid']);
 					$stmt->execute();
 					$_SESSION['id'] = $linha[0]['medicoid'];
 					$_SESSION['tipo'] = "medico";

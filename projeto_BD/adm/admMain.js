@@ -38,7 +38,6 @@ $(document).ready(function() {
 	//ao clicar em cadastrar_usuario
 	$("#N_usu").click(function() {
 		hideAll();
-		show1=0;
 		$("#cadastrar_usu").css("display","block");	
 	});
 	//ao clicar em visualizar usuarios

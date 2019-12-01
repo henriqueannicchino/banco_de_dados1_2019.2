@@ -1,7 +1,7 @@
 <?php
 	function getConnection(){
 	$user = 'postgres';
-	$pass = 'root';
+	$pass = 'z1234567';
 	$host = 'localhost';
 	$dbtype = 'pgsql';
 	$dbname = 'clinic_system';
@@ -12,7 +12,6 @@
 		return $pdo;
 	}catch(PDOException $ex){
 		echo 'Erro: '.$ex->getMessage();
-		var_dump($ex);
 	}catch(\Exception $ex){
 		echo 'Erro: '.$ex->getMessage();
 		var_dump($ex);

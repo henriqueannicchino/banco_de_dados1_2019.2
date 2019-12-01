@@ -22,5 +22,5 @@ if($btn_cadastrar){
 	}
 }
 
-//header("Location: admMain.php");
+header("Location: admMain.php");
 ?>

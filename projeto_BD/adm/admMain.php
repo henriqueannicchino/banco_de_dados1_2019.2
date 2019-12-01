@@ -11,26 +11,6 @@ if($linha[0]['logado']==0){
 }
 
 ?>
-
-
-
-  <?php
-    $sql = "SELECT departamentoid,departamentonome FROM departamento";
-    $stmt = $con->prepare($sql);
-    $stmt->execute();
-    $departamentos=$stmt->fetchAll(PDO::FETCH_ASSOC);
-    $medicamentos = $linha;
-  ?>      
-
-  <?php
-    $sql = "SELECT setorid,setornome FROM setor";
-    $stmt = $con->prepare($sql);
-    $stmt->execute();
-    $linha=$stmt->fetchAll(PDO::FETCH_ASSOC);
-    $setors = $linha;
-  ?>      
-
-
 <html lang="pt-br">
 <head>
 	<meta charset="utf-8">
@@ -93,28 +73,8 @@ if($linha[0]['logado']==0){
 					<input id="descAb" type="text" name="descAbilidade" placeholder="descAbilidade" value="">
 					<input type="text" name="usuario" placeholder="usuario" value="">
 					<input type="password" name="senha" placeholder="senha" value="">
-					<select name="setor" id="setor">
-            <?php
-              foreach($setors as $setor)
-              {
-             ?>
-                <option value="<?php echo $setor['setornome'];?>"><?php echo $setor['setornome'];?></option>
-            <?php
-              }
-             ?>
-					</select>
-					<select name="departamento" id="dept">
-            <?php
-              foreach($departamentos as $departamento)
-              {
-             ?>
-                <option value="<?php echo $departamento['departamentonome'];?>"><?php echo $departamento['departamentonome'];?></option>
-            <?php
-              }
-             ?>
-					</select>
-					<!--<input id="setor" type="text" name="setor" placeholder="setor" value="">-->
-					<!--<input id="dept" type="text" name="departamento" placeholder="departamento" value="">-->
+					<input id="setor" type="text" name="setor" placeholder="setor" value="">
+					<input id="dept" type="text" name="departamento" placeholder="departamento" value="">
 				</div>
 				<input type="submit" class="btn_menu" name="btn_cadastrar" value="cadastrar">
 			</div>
@@ -155,7 +115,7 @@ if($linha[0]['logado']==0){
                         echo "<tr><td>". $linha[$count]['adminid']. "</td><td>".'|'. $linha[$count]['primeironome']. "</td><td>". '|'. $linha[$count]['ultimonome'].
                             "</td><td>". '|'. $linha[$count]['endereco']. "</td><td>". '|'. $linha[$count]['cidade']. "</td><td>". '|'. $linha[$count]['estado'].
 							"</td><td>". '|'. $linha[$count]['cep']. "</td><td>". '|'. $linha[$count]['data_nasc']. "</td><td>". '|'. $linha[$count]['cpf'].
-							"</td><td>". '|'. $linha[$count]['telefone']. "</td><td>". '|'. "ADMIN". "</td><td>".
+							"</td><td>". '|'. $linha[$count]['telefone']. "</td><td>". '|'. "ADMIN". "</td><td>". "</td><td>". "</td><td>". "</td><td>". '|'. $linha[$count]['usuario'].
                             "</td></tr>";
                         $count++;
                     }
@@ -474,6 +434,12 @@ if($linha[0]['logado']==0){
 					<input type="text" name="cpf" placeholder="cpf" value="">
 					<input type="text" name="telefone" placeholder="telefone" value="">
 					<input type="text" name="dataReg" placeholder="data Registro ano-mês-dia" value="">
+					<input type="text" name="medico" placeholder="medico" value="">
+					<input type="text" name="tratamentoDesc" placeholder="tratamentoDesc" value="">
+					<input type="text" name="tratamentoData" placeholder="tratamentoData ano-mês-dia" value="">
+					<input type="text" name="tratamentoValor" placeholder="tratamentoValor" value="">
+					<input type="text" name="quartoNum" placeholder="quartoNum" value="">
+					<input type="text" name="camaNum" placeholder="camaNum" value="">
 				</div>
 				<input type="submit" class="btn_menu" name="btn_cadastrar" value="cadastrar">
 			</div>

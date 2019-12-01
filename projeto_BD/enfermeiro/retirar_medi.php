@@ -1,12 +1,12 @@
 <?php
 session_start();
 include_once("../conection.php");
-$btn_vender = filter_input(INPUT_POST, 'btn_vender', FILTER_SANITIZE_STRING);
-if($btn_vender){
+$btn_retirar = filter_input(INPUT_POST, 'btn_retirar', FILTER_SANITIZE_STRING);
+if($btn_retirar){
 	$medicamentoNome = "'".filter_input(INPUT_POST, 'nome_medi', FILTER_SANITIZE_STRING)."'";
 	$quantidade = filter_input(INPUT_POST, 'quantidade', FILTER_SANITIZE_STRING);
 	if((!empty($medicamentoNome)) and (!empty($quantidade))){
-			if($quantidade>0){
+		if($quantidade>0){
 			$sql = "SELECT medicamentoid,quantidade FROM medicamento WHERE medicamentoNome=$medicamentoNome";
 			$stmt = $con->prepare($sql);
 			$stmt->execute();
@@ -25,5 +25,5 @@ if($btn_vender){
 	}
 }
 
-header("Location: recepcionistaMain.php");
+header("Location: enfermeiroMain.php");
 ?>
