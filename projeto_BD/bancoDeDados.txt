@@ -1,3 +1,6 @@
+/*DROP TABLE pessoa, admin, admissao, agendamento, cama, 
+clinica, departamento, enfermeiro, medico, paciente, prescricao, quarto,
+recepcionista, setor, tipoquarto, tratamento, visita*/
 /*CREATE TABLE pessoa(
 	pessoaId SERIAL PRIMARY KEY,
 	primeiroNome VARCHAR,
@@ -89,10 +92,9 @@
 	medicamentoId SERIAL PRIMARY KEY,
 	medicamentoNome VARCHAR,
 	medicamentoDesc VARCHAR,
-	quantidade INT CHECK(quantidade>=0),
+	quantidade_atual INT CHECK(quantidade_atual>=0),
 	preco FLOAT CHECK(preco >= 0)
 );*/
-
 /*CREATE TABLE prescricao(
 	prescricaoId SERIAL PRIMARY KEY,
 	prescricaoData DATE,
@@ -128,28 +130,101 @@
 	pacienteId INT REFERENCES paciente(pacienteid),
 	camaNum INT
 );*/
-
-
 --INSERT INTO clinica(clinicaNome)VALUES('ViverCauan');
 --INSERT INTO departamento(departamentoNome,clinicaId)VALUES('CENTRO DE INCONTINÊNCIA E DOENÇAS DO ASSOALHO PÉLVICO',1);
 --INSERT INTO setor(clinicaId,setorNome)VALUES(1,'setor das dores');
-
 /*INSERT INTO pessoa(primeiroNome,ultimoNome,endereco,cidade,estado,cep,data_nasc,cpf,telefone) 
 VALUES ('Pedro','Alephu','rua: nao sei','Má Vista','Rorãima','69308031','1999-01-01','000.000.000-01','99153-1289');
 
 INSERT INTO pessoa(primeiroNome,ultimoNome,endereco,cidade,estado,cep,data_nasc,cpf,telefone) 
-VALUES ('Ibukun','Didier','rua: nao sei 69','Má Vista','Rorãima','69308031','1995-01-01','000.000.000-02','99153-1289');*/
---SELECT * FROM pessoa;
+VALUES ('Ibukun','Didier','rua: nao sei 69','Má Vista','Rorãima','69308031','1995-01-01','000.000.000-02','99153-1289');
 
+INSERT INTO pessoa(primeiroNome,ultimoNome,endereco,cidade,estado,cep,data_nasc,cpf,telefone) 
+VALUES
+('Gon', 'kaka', 'bueiro', 'nada', 'Rorãima', '69303608', '2000-01-01', '000.000.000-03','74635-5748');
+*/
+--SELECT * FROM pessoa;
 --INSERT INTO funcionario(dataContratacao,anosDeExperiencia,pessoaId)VALUES('2001-01-01','5','1');
 --SELECT * FROM funcionario;
 
 --INSERT INTO funcionario(dataContratacao,anosDeExperiencia,pessoaId)VALUES('2004-02-01','1','2');
-
+--INSERT INTO funcionario(dataContratacao,anosDeExperiencia,pessoaId)VALUES('2006-04-05','0','3');
 --INSERT INTO admin(usuario,senha,pessoaId)VALUES('adm','1234',1);	
 --INSERT INTO medico(descAbilidade,usuario,senha,funcId)VALUES('açougueiro','med','1234',2);
 /*INSERT INTO enfermeiro(descAbilidade,usuario,senha,funcId,setorId,departamentoId)VALUES('supositorio','enf','1234',
-																						2,1,1);*/
---INSERT INTO recepcionista(descAbilidade,usuario,senha,funcId)VALUES('dormir','recp','1234',2);
+---INSERT INTO paciente(DataReg, pessoaID) VALUES ('2015-06-05', 3)																					2,1,1);*/
+---INSERT INTO recepcionista(descAbilidade,usuario,senha,funcId)VALUES('dormir','recp','1234',2);
+---SELECT * FROM pessoa, funcionario INNER JOIN admin on pessoa.pessoaID = admin.pessoaID;
+---SELECT pessoaID, primeironome from pessoa
+/*
+CREATE TABLE movimenta_medicamento(
+	moviemtacaoID SERIAL PRIMARY KEY,
+	medicamentoID INT,
+	tipo VARCHAR(1),
+	quantidade INT,
+	FOREIGN KEY (medicamentoID) REFERENCES medicamento(medicamentoID)
+);
 
+CREATE TABLE vendas(
+	medicamentoID INT PRIMARY KEY,
+	quantidade_vendas INT,
+	FOREIGN KEY (medicamentoID) REFERENCES medicamento(medicamentoID)
+);
+---DROP TABLE vendas
+INSERT INTO medicamento(medicamentoNome, medicamentoDesc, quantidade_atual, preco) VALUES('M1','medicamento 1', 100, 20.00);
+SELECT * FROM medicamento;
+CREATE OR REPLACE FUNCTION update_movimentacao()
+RETURNS TRIGGER
+AS $up_mov$
+BEGIN
+	IF NEW.tipo = 'A' THEN -- adicionar medicamento
+		UPDATE medicamento as me
+		SET quantidade_atual = (quantidade_atual + NEW.quantidade)
+		FROM movimenta_medicamento as mov
+		WHERE me.medicamentoID = mov.medicamentoID;
+	ELSEIF NEW.tipo = 'V' THEN --vender medicamento
+		UPDATE medicamento as me
+		SET quantidade_atual = (quantidade_atual - NEW.quantidade)
+		FROM movimenta_medicamento as mov
+		WHERE me.medicamentoID = mov.medicamentoID;
+		UPDATE vendas
+		SET quantidade_vendas = quantidade_vendas + NEW.quantidade
+		FROM movimenta_medicamento as mov
+		WHERE vendas.medicamentoID = mov.medicamentoID;
+	END IF;
+	RETURN NEW;
+END;
+$up_mov$ LANGUAGE plpgsql;
+CREATE TRIGGER up_medicamento AFTER INSERT ON movimenta_medicamento
+FOR EACH ROW EXECUTE PROCEDURE update_movimentacao();
+INSERT INTO vendas(medicamentoID, quantidade_vendas) VALUES (1, 0);
+INSERT INTO movimenta_medicamento(medicamentoID,tipo, quantidade) VALUES (1, 'A', 50);
 
+CREATE OR REPLACE FUNCTION edit_movimentacao()
+RETURNS TRIGGER
+AS $ed_mov$
+BEGIN
+	IF OLD.tipo = 'A' THEN
+		UPDATE medicamento as me
+		SET quantidade_atual = quantidade_atual - OLD.quantidade + NEW.quantidade
+		FROM movimenta_medicamento as mov
+		WHERE NEW.medicamentoID = OLD.medicamentoID;
+	ELSEIF NEW.tipo = 'V' THEN
+		UPDATE medicamento as me
+		SET quantidade_atual = quantidade_atual + OLD.quantidade - NEW.quantidade
+		FROM movimenta_medicamento as mov
+		WHERE NEW.medicamentoID = OLD.medicamentoID;
+		UPDATE vendas
+		SET quantidade_vendas = quantidade_vendas - NEW.quantidade + NEW.quantidade
+		FROM movimenta_medicamento as mov
+		WHERE NEW.medicamentoID = OLD.medicamentoID;
+	END IF;
+	RETURN NEW;
+END;
+$ed_mov$ LANGUAGE plpgsql;
+CREATE TRIGGER ed_medicamento AFTER UPDATE ON movimenta_medicamento
+FOR EACH ROW EXECUTE PROCEDURE edit_movimentacao();
+UPDATE movimenta_medicamento set quantidade = 20 where moviemtacaoID = 23;
+SELECT moviemtacaoID FROM movimenta_medicamento;
+SELECT me.medicamentoID, me.quantidade_atual, v.quantidade_vendas, me.preco FROM medicamento as me, vendas as v;
+*/
