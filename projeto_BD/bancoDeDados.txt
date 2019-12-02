@@ -123,7 +123,6 @@ recepcionista, setor, tipoquarto, tratamento, visita*/
 	setorId INT REFERENCES setor(setorId),
 	disponivel INT DEFAULT 1
 );*/
-
 /*CREATE TABLE cama(
 	camaId SERIAL PRIMARY KEY,
 	quartoId INT REFERENCES quarto(quartoId),
@@ -171,7 +170,7 @@ CREATE TABLE vendas(
 	FOREIGN KEY (medicamentoID) REFERENCES medicamento(medicamentoID)
 );
 ---DROP TABLE vendas
-INSERT INTO medicamento(medicamentoNome, medicamentoDesc, quantidade_atual, preco) VALUES('M1','medicamento 1', 100, 20.00);
+INSERT INTO medicamento(medicamentoNome, medicamentoDesc, quantidade_atual, preco) VALUES('M2','medicamento 2', 18, 15.00);
 SELECT * FROM medicamento;
 CREATE OR REPLACE FUNCTION update_movimentacao()
 RETURNS TRIGGER
@@ -227,4 +226,46 @@ FOR EACH ROW EXECUTE PROCEDURE edit_movimentacao();
 UPDATE movimenta_medicamento set quantidade = 20 where moviemtacaoID = 23;
 SELECT moviemtacaoID FROM movimenta_medicamento;
 SELECT me.medicamentoID, me.quantidade_atual, v.quantidade_vendas, me.preco FROM medicamento as me, vendas as v;
+*/
+/*
+---ttrrgier que fazinsert em evdas quando ha insert em medicamento 
+CREATE OR REPLACE FUNCTION update_vendas()
+RETURNS TRIGGER
+AS $up_venda$
+BEGIN
+	INSERT INTO vendas(medicamentoID, quantidade_vendas)
+	VALUES ((SELECT medicamentoID FROM medicamento WHERE medicamentoID = NEW.medicamentoID),0);
+	RETURN NEW;
+END;
+$up_venda$ LANGUAGE plpgsql;
+CREATE TRIGGER insere_venda AFTER INSERT ON medicamento
+FOR EACH ROW EXECUTE PROCEDURE update_vendas();
+SELECT * FROM vendas;
+---trigger que libra o quarto quando o paciente é liberado
+CREATE OR REPLACE FUNCTION libera_cama()
+RETURNS TRIGGER
+AS $up_cama$
+BEGIN
+	UPDATE cama
+	SET pacienteID = NULL
+	WHERE pacienteID = (SELECT pacienteID FROM paciente WHERE pacienteID = OLD.pacienteID);
+	RETURN OLD;
+END;
+$up_cama$ LANGUAGE plpgsql;
+CREATE TRIGGER libera_paciente BEFORE DELETE ON paciente
+FOR EACH ROW EXECUTE PROCEDURE libera_cama();
+SELECT * FROM paciente;
+SELECT * FROM setor;
+SELECT * FROM cama;
+INSERT INTO quarto(quartoDesc, capacidade, quartoNum, setorID)
+VALUES ('quarto 1', 2, 0, 1);
+INSERT INTO cama(quartoID, pacienteID, camaNum)
+VALUES ( 1, NULL, 0);
+UPDATE cama set pacienteID = 1 where camaID = 4;
+DELETE FROM paciente where pacienteID = 1;
+--DROP TABLE cama
+DROP VIEW view_funcionario;
+CREATE VIEW view_funcionario WITH (security_barrier) AS SELECT * FROM funcionario;
+
+EXPLAIN SELECT * FROM view_funcionario;
 */
