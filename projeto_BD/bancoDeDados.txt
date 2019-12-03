@@ -287,4 +287,11 @@ FROM pessoa INNER JOIN funcionario ON funcionario.pessoaId = pessoa.pessoaID
  SELECT pessoa.pessoaId, pessoa.primeiroNome, pessoa.cpf, 'paciente' as ocupacao, funcionario.anosDeExperiencia
  FROM pessoa INNER JOIN funcionario ON funcionario.pessoaId = pessoa.pessoaID
  INNER JOIN paciente ON paciente.pessoaId = pessoa.pessoaId
+ 
+ 
+CREATE VIEW cama_status AS SELECT camaId, 'ocupada' as status from cama
+WHERE pacienteId != NULL
+UNION ALL
+SELECT camaId, 'livre' as status from cama
+WHERE cama.pacienteId = NULL
 */
