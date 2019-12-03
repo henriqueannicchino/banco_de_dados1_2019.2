@@ -268,4 +268,23 @@ DROP VIEW view_funcionario;
 CREATE VIEW view_funcionario WITH (security_barrier) AS SELECT * FROM funcionario;
 
 EXPLAIN SELECT * FROM view_funcionario;
+CREATE VIEW ocupacao WITH (security_barrier) AS SELECT pessoa.pessoaId, pessoa.primeiroNome, pessoa.cpf, 'medico' as ocupacao, funcionario.anosDeExperiencia
+FROM pessoa INNER JOIN funcionario ON funcionario.pessoaId = pessoa.pessoaID
+ INNER JOIN medico ON medico.funcId = funcionario.funcId
+ UNION ALL
+ SELECT pessoa.pessoaId, pessoa.primeiroNome, pessoa.cpf, 'enfermeiro' as ocupacao, funcionario.anosDeExperiencia
+ FROM pessoa INNER JOIN funcionario ON funcionario.pessoaId = pessoa.pessoaID
+ INNER JOIN enfermeiro ON enfermeiro.funcId = funcionario.funcId
+ UNION ALL
+ SELECT pessoa.pessoaId, pessoa.primeiroNome, pessoa.cpf, 'repcionista' as ocupacao, funcionario.anosDeExperiencia
+ FROM pessoa INNER JOIN funcionario ON funcionario.pessoaId = pessoa.pessoaID
+ INNER JOIN recepcionista ON recepcionista.funcId = funcionario.funcId
+ UNION ALL
+ SELECT pessoa.pessoaId, pessoa.primeiroNome, pessoa.cpf, 'admin' as ocupacao, funcionario.anosDeExperiencia
+ FROM pessoa INNER JOIN funcionario ON funcionario.pessoaId = pessoa.pessoaID
+ INNER JOIN admin ON admin.pessoaId = pessoa.pessoaId
+ UNION ALL
+ SELECT pessoa.pessoaId, pessoa.primeiroNome, pessoa.cpf, 'paciente' as ocupacao, funcionario.anosDeExperiencia
+ FROM pessoa INNER JOIN funcionario ON funcionario.pessoaId = pessoa.pessoaID
+ INNER JOIN paciente ON paciente.pessoaId = pessoa.pessoaId
 */
